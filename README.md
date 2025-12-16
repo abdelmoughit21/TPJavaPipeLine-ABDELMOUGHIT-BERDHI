@@ -77,24 +77,6 @@ exit
 docker restart jenkins
 ```
 
-## 🚀 Utilisation
-
-### Créer le Pipeline dans Jenkins
-
-1. Dans Jenkins, cliquez sur **"New Item"**
-2. Nommez votre pipeline: `JavaPipeLine`
-3. Sélectionnez **"Pipeline"**
-4. Dans la section **Pipeline**, choisissez **"Pipeline script from SCM"**
-5. SCM: **Git**
-6. Repository URL: `https://github.com/abdelmoughit21/TPJavaPipeLine-ABDELMOUGHIT-BERDHI.git`
-7. Script Path: `Jenkinsfile`
-8. Sauvegardez
-
-### Lancer le Pipeline
-
-1. Cliquez sur **"Build Now"**
-2. Observez l'exécution dans **"Console Output"**
-
 
 ## 📁 Structure du Projet
 
