@@ -1,6 +1,4 @@
-# TPJavaPipeLine-{{ABDELMOUGHIT BERDHI}}
-
-> **Note:** Remplacez `{{ABDELMOUGHIT BERDHI}}` par votre nom et prénom dans le nom du dépôt GitHub.
+# TPJavaPipeLine-ABDELMOUGHIT BERDHI
 
 ## 📋 Description du Projet
 
