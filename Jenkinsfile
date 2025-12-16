@@ -3,7 +3,7 @@ pipeline {
         docker { 
             // Image containing Maven and Git 
             image 'my-maven-git:latest' 
-            // To reuse local Maven cache between builds 
+            // Reuse local Maven cache between builds 
             args '-v $HOME/.m2:/root/.m2' 
         } 
     } 
@@ -12,15 +12,23 @@ pipeline {
         stage('Checkout') { 
             steps { 
                 echo '========================================='
-                echo 'Stage: Checkout - Cloning Git repository'
+                echo 'Stage: Checkout - Cloning repository'
                 echo '========================================='
                 
-                // Clean the directory 
-                sh "rm -rf *" 
-                
-                // Checkout the Git repository 
-                sh "git clone https://github.com/simoks/java-maven.git" 
-                
+                // Clean workspace
+                sh 'rm -rf *'
+
+                // GitHub credentials (PAT)
+                withCredentials([usernamePassword(
+                    credentialsId: 'github-creds',
+                    usernameVariable: 'GIT_USER',
+                    passwordVariable: 'GIT_TOKEN'
+                )]) {
+                    sh '''
+                        git clone https://${GIT_USER}:${GIT_TOKEN}@github.com/spring-guides/gs-maven.git
+                    '''
+                }
+
                 echo 'Checkout completed successfully!'
             } 
         } 
@@ -32,20 +40,16 @@ pipeline {
                 echo '========================================='
                 
                 script { 
-                    def currentDir = pwd() 
-                    echo "Current directory: ${currentDir}" 
+                    echo "Current directory: ${pwd()}" 
                      
-                    // Navigate to the directory containing the Maven project 
-                    dir('java-maven/maven') { 
+                    // Navigate to Maven project directory
+                    dir('gs-maven/complete') { 
                         echo 'Running Maven clean test package...'
-                        
-                        // Run Maven commands 
-                        sh 'mvn clean test package' 
-                        
+                        sh 'mvn clean test package'
                         echo 'Maven build completed successfully!'
                     } 
-                } 
-            } 
+                }
+            }
         }
         
         stage('Run Application') {
@@ -55,12 +59,9 @@ pipeline {
                 echo '========================================='
                 
                 script {
-                    dir('java-maven/maven') {
+                    dir('gs-maven/complete') {
                         echo 'Launching Java application...'
-                        
-                        // Run the JAR file
-                        sh "java -jar target/maven-0.0.1-SNAPSHOT.jar"
-                        
+                        sh 'java -jar target/gs-maven-0.1.0.jar'
                         echo 'Application executed successfully!'
                     }
                 }
